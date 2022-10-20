@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title> 852_a2_q9 &middot; </title>
+
+  <link rel="stylesheet" href="./includes/a.css">
+  <link rel="icon" href="./includes/a.png"> 
+
+  <!-- the wonderful katex ! -->
+  <link rel="stylesheet" href="./includes/katex/katex.min.css">
+  <script src="./includes/katex/katex.min.js"></script>
+  <script src="./includes/a.js"></script>
+
+  <style></style>
+
+</head>
+
+<div class='section border margin padding'>
+
+  <h4> econ 852 a2 q9 </h4>
+  
+</div>
+
+<div class='section border margin padding'>
+
+  <h4> part 1 : b1_hat and b2_hat x (&rho;, &sigma;, pid) </h4>
+  
+  <p> first, there are 135 histograms here. rho x sigma x pid makes 27, times 5 variables : b1_hat, b2_hat, t1, t2, r_sq </p>
+  
+
+  <p> both b1_hat and b2_hat are unbiased under pid_1 </p>
+  <p> pid_1 is well specified (insofar as the instruction shows us [[b1_hat],[b2_hat]], which doesnt estimate an intercept, but we can make b_0 = 0, so the interceptless regression of y on x1 x2 works just fine </p>
+  <p> the variance of b1_hat and b2_hat increase with sigma and rho </p>
+  <p> sigma is just noise, and obfuscates the actual influence of x1 and x2. </p>
+  <p> rho increasing means x1 and x2 are correlated. the bigger rho is, the more likely it will be that we observe x2 above E[x2] when x1 is above E[x1], and so on. </p>
+  <p> this makes it hard to tell what is acting on y, since x1 and x2 move together </p>
+  
+  <img src='./figures/a2_figure_001.png' width=600 />
+  <img src='./figures/a2_figure_002.png' width=600 />
+  
+  <h4> onto pid_2 </h4>
+  <p> under pid_2, b1_hat is biased, and it'll stay that way. but it's harder to tell when sigma is high. but when sigma is low, and rho is high, then it's very clear. i put a red box around it. </p>
+
+  <p><span class='math'> \hat{\beta_1} \xrightarrow{p} \dfrac{ \text{cov}(x_1, y)}{\text{var}(x_1)} = \beta_1 + \underbrace{\beta_2 \cdot \dfrac{ \text{cov}(x_1, x_2)}{\text{var}(x_1)}}_{\text{no } x_2 \text{makes OVB}} + \underbrace{\dfrac{ \text{cov}(x_1, e)}{\text{var}(x_1)}}_{\text{should be 0 }} </span></p>
+  
+  <p> increasing sigma doesnt bias anything, it just increases the variance of b1 and b2 </p>
+  <p> but leaving x2 out entirely, that's a pickle. that's the OVB. the beta1_hat won't converge on beta_1 (probably). the more observations you add, the better you'll be at being wrong. so b1_hat won't be unbiased nor will it be consistent. </p>
+  
+  <p> clearly, the histograms for b2_hat are just sticks, living at b2_hat = 0, since it wasn't included in the model </p>
+  
+  <img src='./figures/a2_figure_003.png' width=600 />
+  <img src='./figures/a2_figure_004.png' width=600 />
+
+  <h4> under pid_3 </h4>
+  
+  <p> pid_3 is this : if pid_1 says t2 is too low (in absolute terms), it's probably not important, so get rid of it </p>
+  <p> looking at this, it starts the same as pid_1. </p>  
+  <p> neither sigma nor rho makes b1_hat or b2_hat unbiased or not consistent, but they both add to the noise </p>
+  <p> so as they go up, the chances that we'll get a bad roll on t2 under pid_1 is higher </p>
+  <p> so even tho there is nothing wrong with the estimate, the idea is that we used a low t2 to get rid of x2 </p>
+  <p> <span class='inline-code'>sigma=5, rho=0.8</span> is funny, since the distribution of b1_hat is in the middle of choosing between pid_1 and pid_2 </p>
+  
+  <table class='mytables margin'>
+  <tr>
+    <th colspan=99>
+      <div class='green padding'> like a butterfly, the distribution of b1_hat changes </div>
+      <div class='green padding' style='font-size: 1.1em';> unlike a butterfly, it does so in plain sight </div>
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <div> sigma2 = 1 </div>
+      <div> is unbiased and consistent  </div>
+    </th>
+    <th>
+      <div> sigma2 = 5 </div>
+      <div> learning bad habits </div>
+    </th>
+    <th>
+      <div> sigms3 = 10 </div>
+      <div> accepted bad habits </div>  
+    </th>
+  </tr>
+  <tr>
+    <td><img src="./histograms/econ_852_a2_q9_hist_rho=0.8_var=1_pid=3_variable=b1_hat.png" width="300" style="display: inline;"></td>
+    <td><img src="./histograms/econ_852_a2_q9_hist_rho=0.8_var=5_pid=3_variable=b1_hat.png" width="300"  style="display: inline;"></td>
+    <td><img src="./histograms/econ_852_a2_q9_hist_rho=0.8_var=10_pid=3_variable=b1_hat.png" width="300"  style="display: inline;"></td>
+  </tr>
+  <tr>
+    <th colspan=99>
+      <div class='padding'> this is a theatrical evolution </div>
+    </th>
+  </tr>
+  
+  </table>
+  
+  
+  
+  <p> pid_3 isn't necessarily a jumble of both pid_1 and pid_2. but it can be. when sigma is small, that isn't the case. Even here (above, sort of) we can see rho is 0.8, and the distribution looks ok other than some skew. When when both sigma and rho are large, it is more likely that abs(t2) is small, so it gets kicked out of the model. It's too many cooks spoil the broth. </p>
+  
+  <img src='./figures/a2_figure_006.png' />
+  
+  <table class='mytables margin' style='display: none;'>
+  <tr>
+    <th colspan=99>
+      <div class='green padding'> the evolution of spoiled broth </div>
+      <div class='green padding' style='font-size: 1.1em';> in slow motion </div>
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <div> pid_1 </div>
+      <div> (well specified) </div>
+    </th>
+    <th>
+      <div> pid_3</div>
+      <div> (the erosion of quality)</div>
+    </th>
+    <th>
+      <div> pid_2 </div>
+      <div> (rock bottom) </div>  
+    </th>
+  </tr>
+  <tr>
+    <td><img src="./histograms/econ_852_a2_q9_hist_rho=0.8_var=10_pid=1_variable=b1_hat.png" width="300" style="display: inline;"></td>
+    <td><img src="./histograms/econ_852_a2_q9_hist_rho=0.8_var=10_pid=3_variable=b1_hat.png" width="300"  style="display: inline;"></td>
+    <td><img src="./histograms/econ_852_a2_q9_hist_rho=0.8_var=10_pid=2_variable=b1_hat.png" width="300"  style="display: inline;"></td>
+  </tr>
+  <tr>
+    <th colspan=99>
+      <div class='padding'> naturally i changed the order for dramatic effect </div>
+    </th>
+  </tr>
+  
+  </table>
+
+</div>
+
+<div class='section border margin padding'>
+  <h4> part 2 : pid_3, and density of b2_hat </h4>
+  
+      <div style='display: flex; flex-direction: row; border: 1px solid #58d;'>
+    <div class='border margin padding'>
+    
+  <p> its the same as what i said above for b1, just more dramatic </p>
+  <p> in pid_1, there was nothing wrong with b2_hat. in pid_2, its just a line </p>
+  <p> as sigma and rho go up, it is much more likely that t2 is low, and we drop x2. but NOT EVERY time. so sometimes b2_hat is included in pid_3, and there's some reasonable estimate. but when it's dropped, we get a dumptruck of zeros. </p>
+  <p> it obviously depends a lot on sigma and rho, because when they are both small, the odds of getting a significant result on b2_hat is higher, so we keep x2 in the model on the basis of that higher t2. </p>
+
+</div>
+
+    <div class='border margin padding'>
+<table class='mytables'>
+ <tr>
+  <th colspan=99> average(b2_hat) </th>
+ </tr>
+ <tr>
+  <td>procedure_id</td>
+  <td>sigma / rho</td>
+  <td>0.2</td>
+  <td>0.5</td>
+  <td>0.8</td>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>1</td>
+  <td>1.0026</td>
+  <td>0.9988</td>
+  <td>1.0069</td>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>2.236</td>
+  <td>1.0122</td>
+  <td>1.0054</td>
+  <td>0.9964</td>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>3.1622</td>
+  <td>0.9795</td>
+  <td>0.9875</td>
+  <td>0.9788</td>
+ </tr>
+ <tr>
+  <td>2</td>
+  <td>1</td>
+  <td>0</td>
+  <td>0</td>
+  <td>0</td>
+ </tr>
+ <tr>
+  <td>2</td>
+  <td>2.236</td>
+  <td>0</td>
+  <td>0</td>
+  <td>0</td>
+ </tr>
+ <tr>
+  <td>2</td>
+  <td>3.1622</td>
+  <td>0</td>
+  <td>0</td>
+  <td>0</td>
+ </tr>
+ <tr>
+  <td>3</td>
+  <td>1</td>
+  <td>1.0026</td>
+  <td>0.9988</td>
+  <td>1.001</td>
+ </tr>
+ <tr>
+  <td>3</td>
+  <td>2.236</td>
+  <td>0.9462</td>
+  <td>0.876</td>
+  <td>0.664</td>
+ </tr>
+ <tr>
+  <td>3</td>
+  <td>3.1622</td>
+  <td>0.7218</td>
+  <td>0.6652</td>
+  <td>0.4823</td>
+ </tr>
+</table>
+  </div>
+
+</div>
+
+  
+  <img src='./a2_figure_007.png' />
+  
+
+  
+  <h4> part 3 : look at t1 </h4>
+  
+    <div style='display: flex; flex-direction: row; border: 1px solid #58d;'>
+    <div class='border margin padding'>
+    
+   <p> looking at the t stats tells the same story as the histograms of b1 and b2_hat </p>
+  <p> under pid_1, both are unbiased and consistent, and 
+  <p> under pid_2, t1 will look amazing, because its eating all of x2s hard work </p>
+  <p> we made them correlated, so even intuitively, if x1 goes up, that correlates positively with y AND x2. But x2 is correlated with y so theres a boost from that association. I do hesitate to say, it goes up because of x1 or x2 etc because we just know they're correlated </p>
+  <p> anyhow, t1 under pid_3 will have some skew because whenever x2 gets dropped, the model kicks back to pid_1. sind t1 is higher under pid_2 than pid_1, t1 under pid_3 is basically what it was under pid_1 but with some heavy hitters from pid_2, giving it that positive skew </p>
+  
+  <p> i don't know if we discussed it, but if the t-stats t1 and t2 are correlated, that means we're dropping low values of t1 from pid_1 and replacing them with high values from pid_2 </p>
+  <p> under pid_3, for t2, the idea is if abs(t2) falls below 2, we drop it. when sigma and rho are small, the estimates are less noisy. so we dont drop so many. as they both increase, we drop more and more. </p>
+  <p> t2 under pid_3 is just t2 under pid_1, but with the left tail (or left body idk) cropped, and absorbed by a gigantic pancake. </p>
+  <p> when they are highly correlated, there is a bigger chance of both t1 and t2 being less than 2. but not necessarily in the same model. t1 and t2 are not independent. so thats where the boost comes from </p>
+    
+    </div>
+    <div class='border margin padding'> <img src='./a2_figure_008.png' /> </div>
+
+  </div>
+  
+
+
+
+  
+  <h4> part 4 : on r_sq </h4>
+  
+  <p> in this case, increasing rho has caused r_sq to increase somewhat. but there's an upper limit of that. </p>
+  <p> pid_3 is a mix of pid_1 and pid_2 again, with the 
+  <p> increasing correlation between x1 and x2 increases r2 </p>
+  
+<table class='mytables'>
+ <tr>
+  <td>pid</td>
+  <td>sigma / rho</td>
+  <td>0.2</td>
+  <td>0.5</td>
+  <td>0.8</td>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>1</td>
+  <td>0.7108</td>
+  <td>0.7541</td>
+  <td>0.7874</td>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>2.236</td>
+  <td>0.3454</td>
+  <td>0.3905</td>
+  <td>0.4314</td>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>3.1622</td>
+  <td>0.2147</td>
+  <td>0.2535</td>
+  <td>0.2881</td>
+ </tr>
+ <tr>
+  <td>2</td>
+  <td>1</td>
+  <td>0.4241</td>
+  <td>0.5661</td>
+  <td>0.7067</td>
+ </tr>
+ <tr>
+  <td>2</td>
+  <td>2.236</td>
+  <td>0.2053</td>
+  <td>0.2877</td>
+  <td>0.383</td>
+ </tr>
+ <tr>
+  <td>2</td>
+  <td>3.1622</td>
+  <td>0.1295</td>
+  <td>0.1856</td>
+  <td>0.2517</td>
+ </tr>
+ <tr>
+  <td>3</td>
+  <td>1</td>
+  <td>0.7108</td>
+  <td>0.7541</td>
+  <td>0.7872</td>
+ </tr>
+ <tr>
+  <td>3</td>
+  <td>2.236</td>
+  <td>0.3403</td>
+  <td>0.3836</td>
+  <td>0.4218</td>
+ </tr>
+ <tr>
+  <td>3</td>
+  <td>3.1622</td>
+  <td>0.201</td>
+  <td>0.2395</td>
+  <td>0.2749</td>
+ </tr>
+</table>
+
+  <p><span class='math'> R^2 \rightarrow 1 - \dfrac{\sigma_{u}^2 }{ \sigma_y^2 } = 1 - \dfrac{\text{var}(u)}{\text{var}(y)}</span></p>
+  
+  
+
+  <h4> generating x1 x2 </h4>
+  <p> i used R and there isn't a built-in function, but there is solution for the 2-variable case provided at the following link </p>
+  <p><a target='_blank' href='https://stats.stackexchange.com/questions/15011/generate-a-random-variable-with-a-defined-correlation-to-an-existing-variables'>https://stats.stackexchange.com/questions/15011/generate-a-random-variable-with-a-defined-correlation-to-an-existing-variables</a></p>
+
+  
+  
+
+
+  <h4> the correlation makes t2 noisy </h4>
+  <p> if x1 and x2 are correlated, there might be a lot of noise around either x1 or x2. if there is a lot on x2, then it will have a low t stat </p>
+  <p> so there might be light-mulitillinearity </p>
+  <p> and if we dont examine it, we end up getting rid of x2, when it was correlated with y and x1 </p>
+  <p> by getting rid of it, now x1 is biased, because of OVB </p>
+  
+  <h4> standardize the pictures </h4>
+  <p> In the pictures below, i picked a bin_width that I thot worked, then got the lower_bound and upper_bound of the variable in question, and rounded to the nearest bin_width. And the histograms show densities, not frequencies. </p>
+  
+  
+  
+</div>
+
+<div class='section border margin padding'>
+
+  <div>
+   <div class='mybuttons box margin padding noselect' id='button_b1_hat'>b1_hat</div>
+   <div class='mybuttons box margin padding noselect' id='button_b2_hat'>b2_hat</div>
+   <div class='mybuttons box margin padding noselect' id='button_t1'>t1</div>
+   <div class='mybuttons box margin padding noselect' id='button_t2'>t2</div>
+   <div class='mybuttons box margin padding noselect' id='button_r_sq'>r_sq</div>
+  </div>
+  
+  <div>
+  <div class='mybuttons box margin padding noselect' id='button_pid_1'>pid_1</div>
+  <div class='mybuttons box margin padding noselect' id='button_pid_2'>pid_2</div>
+  <div class='mybuttons box margin padding noselect' id='button_pid_3'>pid_3</div>
+  </div>
+  
+  <div>
+  <div class='mybuttons box margin padding noselect' id='button_var_1'>var_1</div>
+  <div class='mybuttons box margin padding noselect' id='button_var_5'>var_5</div>
+  <div class='mybuttons box margin padding noselect' id='button_var_10'>var_10</div>
+  </div>
+  
+  
+  
+  <div id='container'></div>
+  
+
+
+</div>
+
+
+<script>
+
+// there will be 5*27 graphs
+let arr = [];
+let image_arr = [];
+
+let pid_choice = 0;
+
+window.addEventListener('load', function() {
+  
+for (let i = 0; i < image_arr.length; i++) {
+  image_arr[i].style.display='none';
+  if((image_arr[i].classList.contains('pid_2') || image_arr[i].classList.contains('pid_3')) && image_arr[i].classList.contains('var_10')) {
+    image_arr[i].style.display='inline';
+  }
+}
+
+  button_r_sq.addEventListener('click', function() {
+    
+    str_x = 'r_sq';
+    
+    let index = arr.indexOf(str_x);
+    if (index === -1) {
+      arr.push(str_x);
+      this.style.backgroundColor = '#fc0';
+    }
+    if (index !== -1) {
+      arr.splice(index, 1);
+      this.style.backgroundColor = '#eee';
+    }
+    
+    console.log(arr);
+    for (let i = 0; i < image_arr.length; i++) {
+      image_arr[i].style.display = 'inline';
+    }
+    
+    for (let i = 0; i < image_arr.length; i++) {
+      
+      let remove_img = false;
+      for (let j = 0; j < arr.length; j++) {
+        
+        if (!image_arr[i].classList.contains(arr[j])) {
+          remove_img = true;
+        }
+        
+      }
+      if (remove_img) {
+        image_arr[i].style.display = 'none';
+      }
+    }
+
+    
+  });
+  
+  button_t2.addEventListener('click', function() {
+    
+    str_x = 't2';
+    
+    let index = arr.indexOf(str_x);
+    if (index === -1) {
+      arr.push(str_x);
+      this.style.backgroundColor = '#fc0';
+    }
+    if (index !== -1) {
+      arr.splice(index, 1);
+      this.style.backgroundColor = '#eee';
+    }
+    
+    console.log(arr);
+    for (let i = 0; i < image_arr.length; i++) {
+      image_arr[i].style.display = 'inline';
+    }
+    
+    for (let i = 0; i < image_arr.length; i++) {
+      
+      let remove_img = false;
+      for (let j = 0; j < arr.length; j++) {
+        
+        if (!image_arr[i].classList.contains(arr[j])) {
+          remove_img = true;
+        }
+        
+      }
+      if (remove_img) {
+        image_arr[i].style.display = 'none';
+      }
+    }
+
+    
+  });
+  
+  button_var_1.addEventListener('click', function() {
+    
+    
+    
+    
+    str_x = 'var_1';
+    
+    let index = arr.indexOf(str_x);
+    if (index === -1) {
+      arr.push(str_x);
+      this.style.backgroundColor = '#fc0';
+    }
+    if (index !== -1) {
+      arr.splice(index, 1);
+      this.style.backgroundColor = '#eee';
+    }
+    
+    console.log(arr);
+    for (let i = 0; i < image_arr.length; i++) {
+      image_arr[i].style.display = 'inline';
+    }
+    
+    for (let i = 0; i < image_arr.length; i++) {
+      
+      let remove_img = false;
+      for (let j = 0; j < arr.length; j++) {
+        
+        if (!image_arr[i].classList.contains(arr[j])) {
+          remove_img = true;
+        }
+        
+      }
+      if (remove_img) {
+        image_arr[i].style.display = 'none';
+      }
+    }
+
+    
+  });
+  
+  button_var_5.addEventListener('click', function() {
+    
+    str_x = 'var_5';
+    
+    let index = arr.indexOf(str_x);
+    if (index === -1) {
+      arr.push(str_x);
+      this.style.backgroundColor = '#fc0';
+    }
+    if (index !== -1) {
+      arr.splice(index, 1);
+      this.style.backgroundColor = '#eee';
+    }
+    
+    console.log(arr);
+    for (let i = 0; i < image_arr.length; i++) {
+      image_arr[i].style.display = 'inline';
+    }
+    
+    for (let i = 0; i < image_arr.length; i++) {
+      
+      let remove_img = false;
+      for (let j = 0; j < arr.length; j++) {
+        
+        if (!image_arr[i].classList.contains(arr[j])) {
+          remove_img = true;
+        }
+        
+      }
+      if (remove_img) {
+        image_arr[i].style.display = 'none';
+      }
+    }
+
+    
+  });
+
+  button_var_10.addEventListener('click', function() {
+    
+    str_x = 'var_10';
+    
+    let index = arr.indexOf(str_x);
+    if (index === -1) {
+      arr.push(str_x);
+      this.style.backgroundColor = '#fc0';
+    }
+    if (index !== -1) {
+      arr.splice(index, 1);
+      this.style.backgroundColor = '#eee';
+    }
+    
+    console.log(arr);
+    for (let i = 0; i < image_arr.length; i++) {
+      image_arr[i].style.display = 'inline';
+    }
+    
+    for (let i = 0; i < image_arr.length; i++) {
+      
+      let remove_img = false;
+      for (let j = 0; j < arr.length; j++) {
+        
+        if (!image_arr[i].classList.contains(arr[j])) {
+          remove_img = true;
+        }
+        
+      }
+      if (remove_img) {
+        image_arr[i].style.display = 'none';
+      }
+    }
+
+    
+  });
+  
+  button_b1_hat.addEventListener('click', function() {
+    
+    str_x = 'b1_hat';
+    
+    let index = arr.indexOf(str_x);
+    if (index === -1) {
+      arr.push(str_x);
+      this.style.backgroundColor = '#fc0';
+    }
+    if (index !== -1) {
+      arr.splice(index, 1);
+      this.style.backgroundColor = '#eee';
+    }
+    
+    console.log(arr);
+    for (let i = 0; i < image_arr.length; i++) {
+      image_arr[i].style.display = 'inline';
+    }
+    
+    for (let i = 0; i < image_arr.length; i++) {
+      
+      let remove_img = false;
+      for (let j = 0; j < arr.length; j++) {
+        
+        if (!image_arr[i].classList.contains(arr[j])) {
+          remove_img = true;
+        }
+        
+      }
+      if (remove_img) {
+        image_arr[i].style.display = 'none';
+      }
+    }
+
+    
+  });
+  
+  button_b2_hat.addEventListener('click', function() {
+    
+    str_x = 'b2_hat';
+    
+    let index = arr.indexOf(str_x);
+    if (index === -1) {
+      arr.push(str_x);
+      this.style.backgroundColor = '#fc0';
+    }
+    if (index !== -1) {
+      arr.splice(index, 1);
+      this.style.backgroundColor = '#eee';
+    }
+    
+    console.log(arr);
+    for (let i = 0; i < image_arr.length; i++) {
+      image_arr[i].style.display = 'inline';
+    }
+    
+    for (let i = 0; i < image_arr.length; i++) {
+      
+      let remove_img = false;
+      for (let j = 0; j < arr.length; j++) {
+        
+        if (!image_arr[i].classList.contains(arr[j])) {
+          remove_img = true;
+        }
+        
+      }
+      if (remove_img) {
+        image_arr[i].style.display = 'none';
+      }
+    }
+
+    
+  });
+  
+  button_pid_1.addEventListener('click', function() {
+    
+    str_x = 'pid_1';
+    
+    let index = arr.indexOf(str_x);
+    if (index === -1) {
+      arr.push(str_x);
+      pid_choice += 1;
+      this.style.backgroundColor = '#fc0';
+    }
+    if (index !== -1) {
+      arr.splice(index, 1);
+      pid_choice -= 1;
+      this.style.backgroundColor = '#eee';
+    }
+    
+    
+    if (pid_choice === 0) {
+      // ignore
+    }
+    
+    if (pid_choice > 0) {
+      
+      
+      
+    }
+    
+    for (let i = 0; i < image_arr.length; i++) {
+      image_arr[i].style.display = 'inline';
+    }
+    
+    for (let i = 0; i < image_arr.length; i++) {
+      
+      let remove_img = false;
+      for (let j = 0; j < arr.length; j++) {
+        
+        if (!image_arr[i].classList.contains(arr[j])) {
+          remove_img = true;
+        }
+        
+      }
+      if (remove_img) {
+        image_arr[i].style.display = 'none';
+      }
+    }
+
+    
+  });
+
+  button_pid_2.addEventListener('click', function() {
+    
+    str_x = 'pid_2';
+    
+    let index = arr.indexOf(str_x);
+    if (index === -1) {
+      arr.push(str_x);
+      pid_choice += 1;
+      this.style.backgroundColor = '#fc0';
+    }
+    if (index !== -1) {
+      arr.splice(index, 1);
+      pid_choice -= 1;
+      this.style.backgroundColor = '#eee';
+    }
+    
+    console.log(arr);
+    for (let i = 0; i < image_arr.length; i++) {
+      image_arr[i].style.display = 'inline';
+    }
+    
+    for (let i = 0; i < image_arr.length; i++) {
+      
+      let remove_img = false;
+      for (let j = 0; j < arr.length; j++) {
+        
+        if (!image_arr[i].classList.contains(arr[j])) {
+          remove_img = true;
+        }
+        
+      }
+      if (remove_img) {
+        image_arr[i].style.display = 'none';
+      }
+    }
+
+  });
+
+  button_pid_3.addEventListener('click', function() {
+    
+    str_x = 'pid_3';
+    
+    let index = arr.indexOf(str_x);
+    if (index === -1) {
+      arr.push(str_x);
+      pid_choice += 1;
+      this.style.backgroundColor = '#fc0';
+    }
+    if (index !== -1) {
+      arr.splice(index, 1);
+      pid_choice -= 1;
+      this.style.backgroundColor = '#eee';
+    }
+    
+    console.log(arr);
+    for (let i = 0; i < image_arr.length; i++) {
+      image_arr[i].style.display = 'inline';
+    }
+    
+    for (let i = 0; i < image_arr.length; i++) {
+      
+      let remove_img = false;
+      for (let j = 0; j < arr.length; j++) {
+        
+        if (!image_arr[i].classList.contains(arr[j])) {
+          remove_img = true;
+        }
+        
+      }
+      if (remove_img) {
+        image_arr[i].style.display = 'none';
+      }
+    }
+
+  });
+  
+  button_t1.addEventListener('click', function() {
+    
+    str_x = 't1';
+    
+    let index = arr.indexOf(str_x);
+    if (index === -1) {
+      arr.push(str_x);
+      this.style.backgroundColor = '#fc0';
+    }
+    if (index !== -1) {
+      arr.splice(index, 1);
+      this.style.backgroundColor = '#eee';
+    }
+    
+    console.log(arr);
+    for (let i = 0; i < image_arr.length; i++) {
+      image_arr[i].style.display = 'inline';
+    }
+    
+    for (let i = 0; i < image_arr.length; i++) {
+      
+      let remove_img = false;
+      for (let j = 0; j < arr.length; j++) {
+        
+        if (!image_arr[i].classList.contains(arr[j])) {
+          remove_img = true;
+        }
+        
+      }
+      if (remove_img) {
+        image_arr[i].style.display = 'none';
+      }
+    }
+
+  });
+  
+  container.appendChild(get_histograms('b1_hat'));
+  container.appendChild(get_histograms('b2_hat'));
+  container.appendChild(get_histograms('t1'));
+  container.appendChild(get_histograms('t2'));
+  container.appendChild(get_histograms('r_sq'));
+  
+  function get_histograms(str) {
+    
+    let rho_arr = [0.2, 0.5, 0.8];
+    let var_arr = [1, 5, 10];
+    
+    let table = document.createElement('table');
+    table.classList.add('mytables');
+    table.classList.add('margin');
+    
+    let tr_header = document.createElement('tr');
+    table.appendChild(tr_header);
+    let td_header = document.createElement('th');
+    tr_header.appendChild(td_header);
+    td_header.colSpan = 99;
+    td_header.innerHTML = '<div class="blue padding">' + str + '</div>';
+    
+    let tr = document.createElement('tr');
+    table.appendChild(tr);
+    
+    for (let i = -1; i < 3; i++) {
+      let th = document.createElement('th');
+      if (i > -1) {
+      th.innerHTML = '<div>rho = ' + rho_arr[i] + '</div>';
+      }
+      tr.appendChild(th);
+    }
+
+        
+    for (let y = 0; y < 3; y++) {
+      
+      let tr = document.createElement('tr');
+      table.appendChild(tr);
+      
+        let th = document.createElement('th');
+        th.style.whiteSpace = 'nowrap';
+        th.innerHTML = '<div>var = ' + var_arr[y] + '</div>';
+        tr.appendChild(th);
+        
+        
+      for (let x = 0; x < 3; x++) {
+        
+        let td = document.createElement('td');
+        tr.appendChild(td);
+        
+        for (let z = 0; z < 3; z++) {
+        let img = document.createElement('img');
+        td.appendChild(img);
+        
+        let file_name = 'econ_852_a2_q9_hist_rho=' + rho_arr[x] + '_var=' + var_arr[y] + '_pid=' + (z+1) + '_variable=' + str + '.png';
+        
+        console.log(file_name);
+        
+        img.src = './histograms/' + file_name; 
+        img.width = 300;
+        
+        image_arr.push(img);
+        
+        img.classList.add('rho_' + rho_arr[x]);
+        img.classList.add('var_' + var_arr[y]);
+        img.classList.add('pid_' + (z+1));
+        img.classList.add(str);
+        
+        } // closing z-loop
+        
+      } // closing x-loop
+      
+    }
+    
+    return table;
+    
+  } // closing function
+  
+
+  
+});
+
+</script>
