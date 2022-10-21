@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="./includes/a.css">
+  <link rel="icon" href="./includes/a.png"> 
+  
+  <script src='./includes/r_box.js'></script>
+  <script src='./includes/r_matrix.js'></script>
+  
+  <!-- the wonderful katex ! -->
+  <link rel="stylesheet" href="./includes/katex/katex.min.css">
+  <script src="./includes/katex/katex.min.js"></script>
+  <script src="./includes/a.js"></script>
+
+</head>
+
+<title> 852_a2_q6 &middot; </title>
+
+<div class='section border margin padding'>
+  <h4> econ 852 a2 q6 </h4>
+</div>
+
+<div class='section border margin padding'>
+
+  <h4> 6a </h4>
+
+  <p><span class='math'> R^2 = 1 - \dfrac{\sum \hat{e}^2}{ \sum (  y -\bar{y}  )^2} </span> </p>
+
+  <p><span class='math'> R^2 = 1 - \dfrac{ \frac{1}{n} \sum \hat{e}^2}{ \frac{1}{n} \sum (  y -\bar{y}  )^2} </span> </p>
+   <p> the expression for the numerator is on page 170 of Hansen </p> 
+   <p><span class='math'> \hat{e} = y-x \hat{\beta} = e - x(\hat{\beta}-\beta) </span></p>
+  
+  <p> using the expression for e_hat </p>
+  <p><span class='math'> \frac{1}{n} \sum \hat{e}^2 = \underbrace{\frac{1}{n} \sum {e}^2}_{ \xrightarrow{p} \sigma^2} + A + B </span> [via WLLN, term 1 goes to <span class='math'> \sigma^2</span> and terms 2 and 3 go to 0 ] </p>
+  <p>therefore <span class='math'> \frac{1}{n} \sum \hat{e}^2 \xrightarrow{p} \sigma^2 </span></p>
+  
+  <p> as for the denominator </p>
+  <p> from <span class='math'> \bar{y} \xrightarrow{p} \mu_y </span> and the WLLN, we get : <span class='math'> \frac{1}{n} \sum (y-\bar{y})^2 \xrightarrow{p} \sigma_y^2 </span></p> 
+  
+  <p><span class='math'> R^2 \xrightarrow{p} 1 - \dfrac{ \text{var}(e) }{ \text{var}(y) } </span> </p>
+
+</div>
+
+<div class='section border margin padding'>
+
+  <h4> 6b </h4>
+  
+  
+  <p> if we use the asymptotic value of R^2 </p>
+<p><span class='math'> R^2 \rightarrow 1 - \dfrac{\text{var}(e)}{\text{var}(y)}</span></p>
+
+
+<p><span class='math'>\text{var}(y) = \text{var}(bx+e) = b^2 \text{var}(x) + var(e) + 2 \text{cov}(x,e) </span></p>
+
+<p><span class='math'> R^2 \rightarrow 1 - \dfrac{\text{var}(e)}{ b^2 \text{var}(x) + \text{var}(e) + 2 \text{cov}(x,e) }</span></p>
+
+<p><span class='math'> \text{cov}(x,e) \xrightarrow{p} 0 </span></p>
+
+
+<p><span class='math'> R^2 \rightarrow 1 - \dfrac{\text{var}(e)}{b^2 \text{var}(x) + \text{var}(e)}</span></p>
+
+<p><span class='math'> a = 1 - \dfrac{b}{c+b} </span></p>
+
+
+<p><span class='math'> \dfrac{\partial a}{\partial c} = (-1)(-b)(c+b)^{-2} = b \cdot (c+b)^{-2} \gt 0 </span></p>
+
+<p> so as <span class='math'> \text{var}(x)</span> goes up, <span class='math'>R^2</span> improves asymptotitally </p>
+
+</div>
+
+
