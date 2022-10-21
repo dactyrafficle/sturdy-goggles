@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="./includes/a.css">
+  <link rel="icon" href="./includes/a.png"> 
+  
+  <script src='./includes/r_box.js'></script>
+  <script src='./includes/r_matrix.js'></script>
+  
+  <!-- the wonderful katex ! -->
+  <link rel="stylesheet" href="./includes/katex/katex.min.css">
+  <script src="./includes/katex/katex.min.js"></script>
+  <script src="./includes/a.js"></script>
+
+</head>
+
+<title> 852_a2_q8 &middot; </title>
+
+<div class='section border margin padding'>
+  <h4> econ 852 a2 q8 </h4>
+</div>
+
+<div class='section border margin padding'>
+  <img src='./a2_q8.png' />
+</div>
+
+
+  <div style='display: flex; flex-direction: row;'>
+  
+    <div>
+    
+  
+<div class='section border margin padding'>
+  <p> do the math to interpret the coefficients first </p>
+  <p><span class='math'> y = \beta_1 x + \beta_2 x^2 </span></p>
+  <p><span class='math'> \dfrac{\partial y}{\partial x} = \beta_1 + 2 \cdot \beta_2 \cdot x </span></p>
+  <p> so we should be careful about interpreting the coefficients </p>
+</div>
+  
+  <!--
+  
+  <p><span class='math'> y + \Delta y = \beta_1 (x + \Delta x) + \beta_2 (x + \Delta x)^2 </span></p>
+  
+  <p><span class='math'> y + \Delta y = \beta_1 x + \beta_1 \Delta x + \beta_2 x^2 + 2 \beta_2 x \Delta x + \beta_2 (\Delta x)^2 </span></p>
+  
+  -->
+
+  <div class='section border margin padding'>
+  
+  <h4> make it one restriction </h4>
+  <p> test if 40-yo makes 20 $/h </p>
+  <p><span class='math'> \beta_2 = \dfrac{y - \beta_1 x}{x^2} = \dfrac{20 - \beta_1 40}{{40}^2} = \dfrac{1}{80} - \dfrac{1}{40} \cdot \beta_1 </span></p>
+    <p> we want this to be one of the regression coefficients </p>
+  <p><span class='math'> 0 = \underbrace{\frac{1}{80} - \frac{1}{40} \cdot \beta_1 - \beta_2}_{\gamma} </span></p>
+  </div>
+  
+  <!--
+  <h4> test </h4>
+  
+  <p><span class='math'>  y = ax^2 + bx + c</span></p>
+  <div class='code'>let a = <span class='math'> \beta_2</span><br>
+  let b = <span class='math'> \beta_1</span><br>
+  let c = 0</div>
+  
+  <p><span class='math'>  y = \beta_2 x^2 + \beta_1 x</span></p>
+  <p><span class='math'> y = \Big [ \dfrac{1}{80} - \dfrac{1}{40} \cdot \beta_1 \Big ] x^2 + \beta_1 x</span></p>
+  <p><span class='math'> y(40) = \Big [ \dfrac{1}{80} - \dfrac{1}{40} \cdot \beta_1 \Big ] (40)^2 + \beta_1 (40)</span></p>
+  
+  <p><span class='math'> y(40) = \dfrac{0.5^2 80^2}{80} - \dfrac{40^2}{40} \cdot \beta_1 + 40 \beta_1 </span></p>
+  <p><span class='math'> y(40) = \frac{1}{4} \cdot 80 - 40 \beta_1 + 40 \beta_1 </span></p>
+  <p><span class='math'> y(40) = 20 </span></p>
+  
+  -->
+
+  
+  <div class='section border margin padding'>
+  
+    <h4> how to do it </h4>
+  <p><span class='math'> y = \beta_1 x + \beta_2 x^2 </span></p>
+  <p> times both sides by <span class='math'> \frac{1}{40} </span></p>
+  <p> add <span class='math'> -\frac{1}{80} </span> to both sides </p>
+  
+  <p><span class='math'> \underbrace{\frac{y}{40} - \frac{x}{80}}_{w} = \bigg ( \underbrace{ \frac{1}{40} \cdot \beta_1 - \frac{1}{80} + \beta_2 }_{\gamma} \bigg ) \cdot x + \beta_2 \cdot \bigg ( \underbrace{\frac{x^2}{40} - x}_{z} \bigg ) </span></p>
+  
+  <p> regress w on x and z, and check out the t-stat on x </p>
+  
+  </div> 
+   
+    </div>
+    
+    
+    
+    <div style='flex-grow:1;'> 
+<div class='section border margin padding'>
+
+<pre style='color: #35ae;'>
+    
+<span class='comment'># test in R </span>
+    
+set.seed(12811)
+
+n_obs = 1231
+n_sets = 5000
+
+beta_0 = 0
+beta_1 = 7
+beta_2 = (1/80) - (1/40) * beta_1
+
+arr = c(rep(NULL, times=n_sets))
+reject_count = 0
+
+for (i in 1:n_sets) {
+  
+  x = rnorm(n_obs, mean = 40, sd = 3)
+  x_sq = x^2
+  u = rnorm(n_obs, mean = 0, sd = 1)
+  y = beta_0 + beta_1 * x + beta_2 * x_sq + u
+  w = y/40 - x/80
+  z = x_sq/40 - x
+  
+  model = lm(w ~ x + z)
+  
+  t = summary(model)$coefficients[8]
+  
+  if (abs(t) > 2) {
+    reject_count = reject_count + 1
+  }
+  
+  arr[i] = t
+}
+
+reject_pct = reject_count / n_sets <span class='comment'> # returns 0.0418 </span></pre>
+
+</div>
+
+
+    </div>
+    
+    
+  </div>
+  
+
+  
+  
+  
+  
