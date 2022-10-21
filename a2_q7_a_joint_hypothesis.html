@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="./includes/a.css">
+  <link rel="icon" href="./includes/a.png"> 
+  
+  <script src='./includes/r_box.js'></script>
+  <script src='./includes/r_matrix.js'></script>
+  
+  <!-- the wonderful katex ! -->
+  <link rel="stylesheet" href="./includes/katex/katex.min.css">
+  <script src="./includes/katex/katex.min.js"></script>
+  <script src="./includes/a.js"></script>
+
+</head>
+
+<title> 852_a2_q7 &middot; </title>
+
+<div class='section border margin padding'>
+  <h4> econ 852 a2 q7 </h4>
+</div>
+
+<div class='section border margin padding'>
+  <img src='./a2_q7.png' />
+</div>
+
+<div class='section border margin padding'>
+
+  <p> given the model <span class='math'> y = x_1^T \beta_1 + x_2^T \beta_2 + e </span>, where both regressors are <span class='math'> q \times 1 </span>, how can we test the following ? </p>
+  <p><span class='math'> H_0 : \beta_1 = \beta_2</span> v <span class='math'> H_1 : \beta_1 \ne \beta_2 </span></p>
+  
+  <p> in the 3rd edition of Stock & Watson on pages 230 to 231 there is an approach for the q=1 case which goes as follows : </p>
+
+  <p> <span class='math'> y = b_0 + b_1 x_1 + b_2 x_2 + u </span></p>
+  
+  <p><span class='math'> y = b_0 + b_1 x_1 + b_2 x_2 + \underbrace{b_2 x_1 - b_2 x_1}_{0} + u </span></p>
+
+  <p><span class='math'> y = b_0 + b_1 x_1 - b_2 x_1 + b_2 x_2 + b_2 x_1  + u </span></p>
+
+  <p> if both regressors are <span class='math'> q \times 1 </span> then the coefficients are both <span class='math'> q \times 1 </span></p>
+
+  <p><span class='math'> y = b_0 + \underbrace{(b_1 - b_2)}_{\gamma} x_1 + b_2 \underbrace{(x_1 + x_2)}_{w} + u </span></p>
+
+  <p> <span class='math'> y = b_0 + \gamma \cdot x_1 + b_2 \cdot w + u </span></p>
+
+  <p> in the <span class='math'> q=1</span> case, if we regress <span class='code'> y ~ x<sub>1</sub> + w </span>, we can use the t-stat on <span class='math'> \gamma </span></p>
+
+</div>
