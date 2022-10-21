@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="./includes/a.css">
+  <link rel="icon" href="./includes/a.png"> 
+  
+  <script src='./includes/r_box.js'></script>
+  <script src='./includes/r_matrix.js'></script>
+  
+  <!-- the wonderful katex ! -->
+  <link rel="stylesheet" href="./includes/katex/katex.min.css">
+  <script src="./includes/katex/katex.min.js"></script>
+  <script src="./includes/a.js"></script>
+
+</head>
+
+<title> 852_a2_q5 &middot; </title>
+
+<div class='section border margin padding'>
+
+  <h4> econ 852 a2 q5 </h4>
+</div>
+
+<div class='section border margin padding'>
+
+  <div class='section border margin padding'>
+  <img src='./a2_q5.png' /></div>
+
+  <div id='container'></div>
+  
+  <p> if the model is <span class='math'>y = x_1 \beta_1 + x_2 \beta_2 + e</span>, and <span class='math'>\text{E}[xe] = 0 </span>, that means the model is well specified </p>
+  
+  <p> by leaving out <span class='math'>x_2</span>, we might run into OVB, but not necessarily </p>
+  
+  <p> using the 3 variable case <span class='math'> (x_1, x_2, y) </span> because it's easier to see, we could decompose the estimator for <span class='math'>\beta_1</span> like this : </p>
+  
+  <div class='box border margin padding'><span class='math'> \hat{\beta_1} = \beta_1 + \beta_2 \cdot \dfrac{ \text{cov}(x_1, x_2)}{\text{var}(x_1)} + \dfrac{ \text{cov}(x_1, e)}{\text{var}(x_1)} </span></div>
+  
+  <p> in large samples, the last term will approach its population value, which is 0 </p>
+  
+  <div class='box border margin padding'><span class='math'> \hat{\beta_1} \xrightarrow{p} \beta_1 + \beta_2 \cdot \dfrac{ \text{cov}(x_1, x_2)}{\text{var}(x_1)}  </span></div>
+  
+  
+  <p> if either <span class='math'>\beta_2 = 0</span> or <span class='math'>\text{cov}(x_1,x_2) = 0</span>, then the ols estimator for <span class='math'>\beta_1</span> will continue to be unbiased and consistent </p>
+  
+  <p> if <span class='math'> \text{cov}(x_1,x_2) \ne 0 </span> AND <span class='math'>\beta_2 \ne 0</span>, there is going to be OVB. that's not going to improve with n, so the estimator <span class='math'> \hat\beta_1 </span> would not be consistent </p>
+  
+  <p> for example, if <span class='math'> \text{corr}(x_1,y) </span> and <span class='math'> \text{corr}(x_2,y) </span> are not zero, but <span class='math'> \text{corr}(x_1,x_2) = 0</span> </p>
+  <p> in that case, the model isn't as good as it could be in terms of predicting y, but there's no problem insofar as estimating <span class='math'>\beta_1</span> is concerned </p>
+  
+  <p> Hansen has a decomposition in section 2.24 on p45, where he calls it <span class='math'> \gamma_1 = \Big ( \text{E} \big [ x_1 x_1^T \big ] \Big )^{-1} \text{E} \big [ x_1 y \big ] </span> which turns into <span class='math'> \beta_1 + Q_{11}^{-1}Q_{12} \cdot \beta_2 </span> which really leads into the same talking points I brought up above </p>
+  <p> also I think he used gamma just to distinguish the estimator notationally from the traditional ols estimator </p>
+  
+</div>
+
+
+
+
