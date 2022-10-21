@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="./includes/a.css">
+  <link rel="icon" href="./includes/a.png"> 
+  
+  <script src='./includes/r_box.js'></script>
+  <script src='./includes/r_matrix.js'></script>
+  
+  <!-- the wonderful katex ! -->
+  <link rel="stylesheet" href="./includes/katex/katex.min.css">
+  <script src="./includes/katex/katex.min.js"></script>
+  <script src="./includes/a.js"></script>
+
+</head>
+
+<title> 852_a2_q1 &middot; </title>
+
+<div class='section border margin padding'>
+  <h4> econ 852 a2 q1 </h4>
+</div>
+
+<div class='section border margin padding'>
+  <img src='./a2_q1.png' width=700 />
+</div>
+
+
+<div class='section border margin padding'>
+
+  <p> if the true data generating algorithm is <span class='math'> y = \beta_1 x_1 + \beta_2 x_2 + e </span>, and we regress <span class='math'> y </span> on <span class='math'> x_1, x_2, x_3</span>, where <span class='math'> \text{corr}(x_1,x_3) = 0 </span> and <span class='math'> \text{corr}(x_2,x_3) = 0.999 </span>, the problem we'll run into is multicollinearity. </p>
+  
+  <ul>
+    <li><p> orthogonal regressors : if <span class='math'> x_1 </span> and <span class='math'> x_2 </span> are orthogonal, that implies <span class='math'> \text{corr}(x_1,x_2) = 0 </span> </p>
+    
+     <!-- <span class='math'> x_1 \perp x_2 </span> means <span class='math'> \text{E} \big [ x^Tx \big ] = 0 </span></p> -->
+    <li><p> OLS to be efficient </p>
+      <ul>
+        <li><p> E[u|x] = 0 </p>
+        <li><p> (x1, x2, y) are iid </p>
+        <li><p> large outliers are unlikely <!--: x1, x2, y have non-zero finite 4th moments --> </p>
+        <li><p> + homoskedastic errors [to make it efficient] </p>
+      </ul>
+    <li><p> a simple regression of <span class='math'> x_3</span> on <Span class='math'> x_1</span> gives <span class='math'>R^2 = 0</span>, means <span class='math'> \text{corr} (y, \hat{y}) = \text{corr} (x_1, x_3) = \sqrt{R^2} = 0 </span></p>
+  </ul>
+  </div>
+  
+  <div class='section border margin padding'>
+  
+    <div id='covariance_matrix'></div>
+    <script>
+      window.addEventListener('load', function() {
+        let a = [['var(x<sub>1</sub>)', 0, 0], [0, 'var(x<sub>2</sub>)', 0.999], [0, 0.999, 'var(x<sub>3</sub>)']];
+        covariance_matrix.appendChild(rafficot.show_expression('var(x)', '=', a));
+      });
+    </script>
+  
+    <p> y on x1 x2 is a good model, it's the top column. </p>
+    <p> y on x1 x2 x3 is a pickle </p>
+    <p> since corr(x1,x3) = 0, adding x3 wont have any significant effect on the estimate <span class='math'> \hat{b1}</span>, or <span class='math'> \text{var} ( \hat{b1})</span> </p>
+    
+    
+    <p> but since <span class='math'> \text{corr}(x_2,x_3) = 0.999 </span>, it is very hard to tell if the correlation between x2 and y is really coming from x3, or visa versa. that's the the multicollinearity piece </p>
+    
+    <p> after adding x3 : what happens to b1_hat, b2_hat, SE(x1), SE(x2) ? </p>
+    <ul>
+      <li><p> <span class='math'> \text{E} [ \hat{ \beta_1} ] = \beta_1 </span></p>
+      <li><p> <span class='math'> \text{E} [ \hat{ \beta_2} ] = \beta_2 </span></p>
+      <li><p> <span class='math'> \text{SE} ( \hat{ \beta_1} ) </span> doesnt change </p>
+      <li><p> <span class='math'> \text{SE} ( \hat{ \beta_2} ) </span> increases </p>
+    </ul>
+    <p> the estimators b1_hat and b2_hat are still unbiased and consistent, but b2_hat will struggle, even asymptotically </p>
+  
+  </div>
+  
+  <div class='section border margin padding'>
+
+  <h4> simulation using <span class='math'> y = 3 \cdot x_1 + 7 \cdot x_2 + u </span></h4>
+
+  <table class='mytables'>
+    <tr>
+      <td><img src='./q1_plots/a2_q1_b1_hat.png' width=300 /></td>
+      <td><img src='./q1_plots/a2_q1_SE1_hat.png' width=300 /></td>
+      <td><img src='./q1_plots/a2_q1_b2_hat.png' width=300 /></td>
+      <td><img src='./q1_plots/a2_q1_SE2_hat.png' width=300 /></td>
+    </tr>
+    <tr>
+      <td><img src='./q1_plots/a2_q1_b1_hat_p2.png' width=300 /></td>
+      <td><img src='./q1_plots/a2_q1_SE1_hat_p2.png' width=300 /></td>
+      <td><img src='./q1_plots/a2_q1_b2_hat_p2.png' width=300 /></td>
+      <td><img src='./q1_plots/a2_q1_SE2_hat_p2.png' width=300 /></td>
+    </tr>
+  </table>
+  
+  </div>
+
+
+  
+  
+  
+  
+
+</div>
+
+
+<script>
+
+let data = [
+ [
+1,
+2.11461545360408,
+-0.721391346331759,
+6.5078395608764
+ ],
+ [
+1,
+1.30962718708201,
+-0.743830344921994,
+4.87542402924203
+ ],
+ [
+1,
+1.54243554944234,
+-1.49256512259051,
+4.59230597629417
+ ],
+ [
+1,
+2.15454766548208,
+-1.15666115333307,
+6.15243417763109
+ ],
+ [
+1,
+2.99418967603116,
+1.386865986811,
+10.3752453388733
+ ],
+ [
+1,
+2.09056021296154,
+0.599561532464307,
+7.78068195838739
+ ],
+ [
+1,
+1.90972453072932,
+-4.97150484372508E-03,
+6.81447755661491
+ ],
+ [
+1,
+1.12942878361431,
+0.267634322625344,
+5.52649188985397
+ ],
+ [
+1,
+2.32619848981695,
+-2.38012070312286,
+5.27227627651104
+ ],
+ [
+1,
+1.63831955322882,
+-0.92102136591756,
+5.35561774054008
+ ],
+ [
+1,
+2.12755678528177,
+-8.34744828389541E-02,
+7.17163908772458
+ ],
+ [
+1,
+2.13056038479934,
+-1.01710833724079,
+6.24401243235789
+ ],
+ [
+1,
+1.09606778433748,
+-0.198182040543859,
+4.9939535281311
+ ],
+ [
+1,
+1.15562832270546,
+-0.668442145684944,
+4.64281449972598
+ ],
+ [
+1,
+2.65202908628648,
+0.60486764995485,
+8.90892582252781
+ ],
+ [
+1,
+1.49674254439709,
+-1.81418882374621,
+4.17929626504798
+ ],
+ [
+1,
+2.70363801699662,
+2.18867263704237,
+10.5959486710356
+ ],
+ [
+1,
+2.246147123468,
+-7.86215012306575E-02,
+7.41367274570535
+ ],
+ [
+1,
+2.10190059211433,
+0.108695219297175,
+7.31249640352584
+ ],
+ [
+1,
+1.00687121260587,
+-0.369966261638623,
+4.64377616357312
+ ],
+ [
+1,
+2.33230629657484,
+-1.29703664972732,
+6.36757594342237
+ ],
+ [
+1,
+0.638691687937693,
+-0.833430556622902,
+3.44395281925248
+ ],
+ [
+1,
+1.5371996329803,
+0.214776392661342,
+6.28917565862195
+ ],
+ [
+1,
+1.62409358561352,
+-1.52421019910005,
+4.72397697212699
+ ],
+ [
+1,
+2.95891189714673,
+0.260087200375185,
+9.17791099466865
+ ],
+ [
+1,
+2.61178459120589,
+-1.44408104653474,
+6.77948813587704
+ ],
+ [
+1,
+2.26881260585686,
+9.20859206622146E-02,
+7.62971113237593
+ ],
+ [
+1,
+1.06889059903176,
+-0.343828293002075,
+4.79395290506144
+ ],
+ [
+1,
+1.30102935437122,
+-0.057008434534369,
+5.54505027420807
+ ],
+ [
+1,
+1.28988529671875,
+-1.40709209451212,
+4.17267849892539
+ ],
+ [
+1,
+3.25318450428675,
+0.297554785079189,
+9.80392379365268
+ ],
+ [
+1,
+3.45768203264115,
+0.934976932494991,
+10.8503409977773
+ ],
+ [
+1,
+1.9868030486914,
+-0.19625078129402,
+6.77735531608879
+ ],
+ [
+1,
+3.5961858512672,
+-0.474232513016161,
+9.71813918951823
+ ],
+ [
+1,
+3.28817668259122,
+-0.238038168167769,
+9.33831519701467
+ ],
+ [
+1,
+2.08973080015191,
+-0.513074139353159,
+6.66638746095066
+ ],
+ [
+1,
+3.49770333912357,
+-0.406730939851413,
+9.58867573839572
+ ],
+ [
+1,
+3.42630223075603,
+-0.3286580176523,
+9.52394644385975
+ ],
+ [
+1,
+1.24382706709692,
+-1.121760436423,
+4.36589369777083
+ ],
+ [
+1,
+1.66986405212283,
+1.5149903533133,
+7.85471845755896
+ ],
+ [
+1,
+1.94859857432889,
+-1.07280259277718,
+5.82439455588061
+ ],
+ [
+1,
+2.5710787844262,
+0.237001126759203,
+8.37915869561161
+ ],
+ [
+1,
+2.45673984861611,
+-0.219415680165707,
+7.69406401706651
+ ],
+ [
+1,
+2.48360293792118,
+-1.42593006379322,
+6.54127581204913
+ ],
+ [
+1,
+3.07034070818007,
+0.131524632748359,
+9.2722060491085
+ ],
+ [
+1,
+3.37766494042059,
+0.201582822475782,
+9.95691270331696
+ ],
+ [
+1,
+0.106694306841724,
+4.23762654817565E-02,
+3.25576487916521
+ ],
+ [
+1,
+2.04807920327877,
+1.23840271768089,
+8.33456112423843
+ ],
+ [
+1,
+3.88803483665961,
+-0.824022724001991,
+9.95204694931723
+ ],
+ [
+1,
+1.31823716491807,
+0.164709513217968,
+5.80118384305412
+ ],
+ [
+1,
+3.36841834715746,
+-0.235368491134717,
+9.5014682031802
+ ],
+ [
+1,
+0.926567678824326,
+1.66170094158436,
+6.51483629923301
+ ],
+ [
+1,
+1.32758956662566,
+0.412715334356601,
+6.06789446760793
+ ],
+ [
+1,
+1.82727670574669,
+-2.04056713899919,
+4.61398627249418
+ ]
+];
+
+window.addEventListener('load', function() {
+  
+  // sigma = 1
+  
+  let x1 = rafficot.get_col(data, 0);
+  let x2 = rafficot.get_col(data, 1);
+  
+  let x = rafficot.get_merge_left_right(x1, x2);
+  let y = rafficot.get_col(data, 3);
+  
+  // console.log(y);
+  // console.log(x);
+  
+  let xT = rafficot.get_transpose(x);
+  let xTx = rafficot.get_product(xT, x);
+  let xTx_inv = rafficot.get_inverse(xTx);
+  
+  // console.log(xTx);
+  
+  let xTy = rafficot.get_product(xT, y);
+  let b_hat = rafficot.get_product(xTx_inv, xTy);
+  
+  console.log(b_hat);
+  
+  // homoskedastic standard errors
+  
+  
+  
+});
+
+</script>
